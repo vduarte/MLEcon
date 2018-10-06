@@ -17,7 +17,6 @@ b = 0.011
 
 # Hyper-parameters
 hidden = [10, 10]  # number of units in each hidden layer
-mle.batch_size = 256            # mini batch size
 Δt = 1e-2          # dt for simulation
 
 # State space - log dividends and log consumption-surplus ratio
