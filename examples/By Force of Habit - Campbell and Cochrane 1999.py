@@ -18,6 +18,7 @@ b = 0.011
 # Hyper-parameters
 hidden = [10, 10]  # number of units in each hidden layer
 Δt = 1e-2          # dt for simulation
+mle.set_batch_size(128)
 
 # State space - log dividends and log consumption-surplus ratio
 d, s = mle.states(2)
@@ -73,7 +74,7 @@ env.set_param('learning_rate', 1e-4)
 
 # %% -------------- test function ------------------------------------
 def test():
-    s_ = np.log(np.linspace(1e-5, 0.07, mle.batch_size))
+    s_ = np.log(np.linspace(1e-5, 0.07, mle.get_batch_size()))
     feed_dict = {d: 0, s: s_}
     xx, yy = env([S, F], feed_dict)
     plt.plot(xx, yy, color='b')
