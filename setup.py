@@ -9,7 +9,9 @@ setup(name='mlecon',
       license='',
       package_dir={'': '.'},
       package_data={'':
-                    ['mlecon_compiled.cpython-36m-darwin.so', 'mlecon_compiled.cpython-36m-x86_64-linux-gnu.so']},
+                    ['mlecon_compiled.cpython-36m-darwin.so',
+                     'mlecon_compiled.cpython-36m-x86_64-linux-gnu.so',
+                     'mlecon_compiled.cp36-win_amd64.pyd']},
       install_requires=[
           'tensorflow>=1.6',
           'progressbar2',
