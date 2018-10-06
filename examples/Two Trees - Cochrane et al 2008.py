@@ -10,7 +10,6 @@ n_trees = 2
 
 # Hyper-parameters
 hidden = [64, 32, 8]  # number of units in each hidden layer
-mle.batch_size = 128  # mini batch size
 
 # State space
 D = mle.states(2)  # Create 2 state variables (dividends)
