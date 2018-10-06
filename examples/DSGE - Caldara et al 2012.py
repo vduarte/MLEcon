@@ -11,7 +11,6 @@ hidden = [32, 16, 8]
 dt = mle.dt
 Δt = 0.5
 mle.delta_t = Δt
-mle.batch_size = 128
 
 K, z, σ = mle.states(3)  # State variables
 dZ = mle.brownian_shocks(2)  # Brownian Shocks
