@@ -9,7 +9,8 @@ dt = mle.dt
 n_trees = 2
 
 # Hyper-parameters
-hidden = [64, 32, 8]  # number of units in each hidden layer
+hidden = [32, 16, 4]  # number of units in each hidden layer
+mle.set_batch_size(64)
 
 # State space
 D = mle.states(2)  # Create 2 state variables (dividends)
@@ -65,7 +66,7 @@ def test():
     feed_dict = {D[0]: D0_, D[1]: D1_}
 
     s_, d_ = env([s, d1], feed_dict)
-    plt.plot(s_, d_, color=plt.cm.Blues(.7))
+    plt.plot(s_, d_)
     env.show()
 
 
