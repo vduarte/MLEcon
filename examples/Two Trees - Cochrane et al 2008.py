@@ -58,8 +58,13 @@ env = mle.environment(J)
 
 # %% --- Test function ------------------------------------------------
 def test():
-    s_, d_ = env([s, d1])
-    plt.scatter(s_, d_, s=1, color=plt.cm.Blues(.7))
+    s_ = np.linspace(1e-2, 0.99, mle.get_batch_size())
+    D0_ = s_ * 100
+    D1_ = (1 - s_) * 100
+    feed_dict = {D[0]: D0_, D[1]: D1_}
+
+    s_, d_ = env([s, d1], feed_dict)
+    plt.plot(s_, d_, color=plt.cm.Blues(.7))
     env.show()
 
 
