@@ -59,7 +59,7 @@ env = mle.environment(J)
 # %% --- Test function ------------------------------------------------
 def test():
     plt.clf()
-    s_ = np.linspace(1e-2, 0.99, mle.get_batch_size())
+    s_ = np.linspace(1e-2, 0.999, mle.get_batch_size())
     D0_ = s_ * 100
     D1_ = (1 - s_) * 100
     feed_dict = {D[0]: D0_, D[1]: D1_}
