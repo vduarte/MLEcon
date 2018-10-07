@@ -15,5 +15,6 @@ setup(name='mlecon',
       install_requires=[
           'tensorflow>=1.6'
       ],
+      python_requires='>3.6.4',
       packages=['mlecon'],
       zip_safe=False)
