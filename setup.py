@@ -13,9 +13,7 @@ setup(name='mlecon',
                      'mlecon_compiled.cpython-36m-x86_64-linux-gnu.so',
                      'mlecon_compiled.cp36-win_amd64.pyd']},
       install_requires=[
-          'tensorflow>=1.6',
-          'progressbar2',
-          'mpld3'
+          'tensorflow>=1.6'
       ],
       packages=['mlecon'],
       zip_safe=False)
