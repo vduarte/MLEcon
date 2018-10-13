@@ -60,7 +60,7 @@ mle.launch()
 # %% --- Test function ------------------------------------------------
 def test():
     plt.clf()
-    n_points = mle.batch_size
+    n_points = mle.get_batch_size()
     s_ = np.linspace(1e-2, 0.999, n_points)
     D0_ = s_ * 100
     D1_ = (1 - s_) * 100
