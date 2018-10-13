@@ -68,7 +68,7 @@ mle.summary.set(scalars)
 
 
 # %% -----------  Test function -----------------------------
-feed_dict = {K: np.linspace(1, 10, mle.batch_size),
+feed_dict = {K: np.linspace(1, 10, mle.get_batch_size()),
              z: 0,
              σ: -3}
 
