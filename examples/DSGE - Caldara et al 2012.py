@@ -54,55 +54,53 @@ initial = tf.group(mle.fit(L, .3),
                    mle.fit(s, 1 - ρ))
 
 # %% ---- # Launch graph ---------------------------------
-env = mle.environment()
+mle.launch()
 
 # %% -----------  Create summaries for TensorBoard ----------
 """ To see the summaries in real time during training open
 a terminal and type:
 tensorboard --logdir=./results/summaries
  """
-scalars = {'HJB': tf.log(tf.reduce_mean(tf.abs(HJB()))),
+scalars = {'HJB': tf.log(tf.reduce_mean(tf.abs(HJB(0)))),
            'MSE': tf.log(J.net.loss)}
 
-env.summary.set(scalars)
+mle.summary.set(scalars)
 
 
 # %% -----------  Test function -----------------------------
+feed_dict = {K: np.linspace(1, 10, mle.batch_size),
+             z: 0,
+             σ: -3}
+
+
 def test():
-    eval_dict = {z: 0, σ: -3}  # Reference points: z = 0 and σ = -3
+    K_, C_, L_ = mle.eval([K, C, L], feed_dict)
 
-    plt.figure(1, figsize=[9, 9])
-    K_, C_, L_, J_ = env([K, C, L, J], eval_dict)
-    idx_sort = np.argsort(K_.ravel())
-
-    plt.subplot(1, 3, 1)
-    plt.plot(K_[idx_sort], L_[idx_sort], color='b')
+    plt.subplot(1, 2, 1)
+    plt.plot(K_, L_)
     plt.xlabel('K')
     plt.ylabel('L')
 
-    plt.subplot(1, 3, 2)
-    plt.plot(K_[idx_sort], C_[idx_sort], color='b')
+    plt.subplot(1, 2, 2)
+    plt.plot(K_, C_)
     plt.xlabel('K')
     plt.ylabel('C')
 
-    plt.subplot(1, 3, 3)
-    plt.plot(K_[idx_sort], J_[idx_sort], color='b')
-    plt.xlabel('K')
-    plt.ylabel('J')
-
-    env.show()
+    plt.show()
+    plt.pause(1e-6)
 
 
 # %% ----------- Initialization ---------------------------------
 program = {sample: 1, initial: 1, policy_eval: 1, test: 500}
-env.iterate(program, T='00:00:10')
+mle.iterate(program, T='00:00:10')
 
 # %% -----------  Iteration --------------------------------------
-# env.load()  # Load previous results?
+# mle.load()  # Load previous results?
 program = {sample: 1,
            policy_eval: 1,
            policy_improv: 1,
            test: 1000,
-           env.add_summary: 50}
-env.iterate(program, T='01:00:00')
-env.save()
+           mle.add_summary: 100}
+
+mle.iterate(program, T='01:00:00')
+mle.save()
