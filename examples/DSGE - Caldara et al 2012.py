@@ -64,7 +64,7 @@ tensorboard --logdir=./results/summaries
 scalars = {'HJB': tf.log(tf.reduce_mean(tf.abs(HJB(0)))),
            'MSE': tf.log(J.net.loss)}
 
-mle.summary.set(scalars)
+mle.set_summary(scalars)
 
 
 # %% -----------  Test function -----------------------------
