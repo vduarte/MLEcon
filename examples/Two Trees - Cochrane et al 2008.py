@@ -9,8 +9,8 @@ dt = mle.dt
 n_trees = 2
 
 # Hyper-parameters
-hidden = [32, 16, 4]  # number of units in each hidden layer
-mle.set_batch_size(64)
+hidden = [64, 32, 8]  # number of units in each hidden layer
+mle.batch_size = 128  # mini batch size
 
 # State space
 D = mle.states(2)  # Create 2 state variables (dividends)
@@ -54,22 +54,25 @@ s = D[0] / C
 
 
 # Launch graph
-env = mle.environment(J)
+mle.launch()
 
 
 # %% --- Test function ------------------------------------------------
 def test():
     plt.clf()
-    s_ = np.linspace(1e-2, 0.999, mle.get_batch_size())
+    n_points = mle.batch_size
+    s_ = np.linspace(1e-2, 0.999, n_points)
     D0_ = s_ * 100
     D1_ = (1 - s_) * 100
     feed_dict = {D[0]: D0_, D[1]: D1_}
 
-    s_, d_ = env([s, d1], feed_dict)
+    s_, d_ = mle.eval([s, d1], feed_dict)
     plt.plot(s_, d_)
-    env.show()
+    plt.show()
+    plt.pause(1e-6)
 
 
 # %% --- Iteration ----------------------------------------------------
 program = {sample: 1, regress: 1, test: 500}
-env.iterate(program, T='00:00:30')  # Iterate for 30 s
+mle.iterate(program, T='01:00:30')  # Iterate for 30 s
+mle.save()
