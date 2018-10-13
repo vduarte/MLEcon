@@ -65,22 +65,22 @@ T = j + mle.log(1 + Δt * HJB)                       # bellman target
 # Policy evaluation
 policy_evaluation = mle.fit(j, T)
 
+# %% -------------------------------------------------------------
+
 # Launch graph
-env = mle.environment()
-# %% ------------ Hyperparameters ---------------------------------
-env.set_param('momentum', .9)
-env.set_param('learning_rate', 1e-4)
+mle.launch()
 
 
 # %% -------------- test function ------------------------------------
 def test():
     s_ = np.log(np.linspace(1e-5, 0.07, mle.get_batch_size()))
     feed_dict = {d: 0, s: s_}
-    xx, yy = env([S, F], feed_dict)
+    xx, yy = mle.eval([S, F], feed_dict)
     plt.plot(xx, yy, color='b')
-    env.show()
+    plt.show()
+    plt.pause(1e-6)
 
 
 # %% --------------- main iteration -------------------------------------
 program = {sample: 1, policy_evaluation: 1, test: 1000}
-env.iterate(program, T='00:02:00')
+mle.iterate(program, T='00:02:00')
