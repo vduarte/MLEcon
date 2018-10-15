@@ -43,7 +43,7 @@ z.d = -(1 - λ) * z * dt + mle.exp(σ) * dZ[0]
 σ.d = (1 - ρ) * (σ_ - σ) * dt + η * dZ[1]
 
 f = β * θ * J * ((mle.abs(U / J))**(1 / θ) - 1)  # Duffie-Epstein aggregator
-HJB = f + J.drift  # Bellman residual
+HJB = f + J.drift()  # Bellman residual
 T = J + Δt * HJB   # Bellman target
 
 policy_eval = mle.fit(J, T)
