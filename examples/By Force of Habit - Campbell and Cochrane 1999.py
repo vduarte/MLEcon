@@ -59,7 +59,7 @@ F = P / D
 d.d = g * dt + σ * dZ
 s.d = (1 - ϕ) * (s_bar - s) * dt + λ * σ * dZ
 
-HJB = mle.exp(u - j) - ρ + (j.drift + 0.5 * j.var)  # (log) HJB residuals
+HJB = mle.exp(u - j) - ρ + (j.drift() + 0.5 * j.var())  # (log) HJB residuals
 T = j + mle.log(1 + Δt * HJB)                       # bellman target
 
 # Policy evaluation
