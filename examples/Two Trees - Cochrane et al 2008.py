@@ -10,7 +10,7 @@ n_trees = 2
 
 # Hyper-parameters
 hidden = [64, 32, 8]  # number of units in each hidden layer
-mle.batch_size = 128  # mini batch size
+mle.set_batch_size(128)  # mini batch size
 
 # State space
 D = mle.states(2)  # Create 2 state variables (dividends)
@@ -43,13 +43,13 @@ D[0].d = μ[0] * D[0] * dt + σ[0] * D[0] * dZ[0]
 D[1].d = μ[1] * D[1] * dt + ρ * σ[1] * D[1] * dZ[0] +\
     np.sqrt(1 - ρ**2) * σ[1] * D[1] * dZ[1]
 
-HJB = U - δ * J + J.drift  # Bellman residual
+HJB = U - δ * J + J.drift()  # Bellman residual
 T = J + Δt * HJB           # Bellman target
 regress = mle.fit(J, T)  # Update the ANN J to fit the target T using SGD
 
-Er = P.drift / P + d1  # Expected returns
-variance = P.var / P**2  # returns variance
-r = -M.drift / M + δ     # riskfree rate
+Er = P.drift() / P + d1  # Expected returns
+variance = P.var() / P**2  # returns variance
+r = -M.drift() / M + δ     # riskfree rate
 s = D[0] / C
 
 
