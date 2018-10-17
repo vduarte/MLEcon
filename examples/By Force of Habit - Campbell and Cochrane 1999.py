@@ -1,5 +1,5 @@
 # Copyright 2018 Victor Duarte. All Rights Reserved.
-import sherman as mle
+import mlecon as mle
 import matplotlib.pyplot as plt
 import numpy as np
 
