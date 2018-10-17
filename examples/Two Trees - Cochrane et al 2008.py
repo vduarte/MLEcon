@@ -1,5 +1,5 @@
 # Copyright 2018 Victor Duarte. All Rights Reserved.
-import mlecon as mle
+import sherman as mle
 import matplotlib.pyplot as plt
 import numpy as np
 # %% ----------------- Setup ------------------------------------
@@ -7,20 +7,17 @@ mle.clear()
 dt = mle.dt
 Δt = 0.1
 n_trees = 2
+batch_size = 256
 
 # Hyper-parameters
 hidden = [64, 32, 8]  # number of units in each hidden layer
-mle.set_batch_size(128)  # mini batch size
+mle.set_batch_size(batch_size)  # mini batch size
 
-# State space
-D = mle.states(2)  # Create 2 state variables (dividends)
+# State variables
+D = [mle.state(1e-4, 100) for i in range(n_trees)]
 
 # Shocks
 dZ = mle.brownian_shocks(n_trees)
-
-# Bounds
-bounds = {D[i]: [1e-4, 100] for i in range(n_trees)}
-sample = mle.sampler(bounds)  # Op that performs the sampling
 
 # Function approximator
 inputs = [mle.log(D[i]) for i in range(n_trees)]
@@ -52,7 +49,6 @@ variance = P.var() / P**2  # returns variance
 r = -M.drift() / M + δ     # riskfree rate
 s = D[0] / C
 
-
 # Launch graph
 mle.launch()
 
@@ -60,19 +56,21 @@ mle.launch()
 # %% --- Test function ------------------------------------------------
 def test():
     plt.clf()
-    n_points = mle.get_batch_size()
-    s_ = np.linspace(1e-2, 0.999, n_points)
+    s_ = np.linspace(1e-2, 0.999, batch_size)
     D0_ = s_ * 100
     D1_ = (1 - s_) * 100
     feed_dict = {D[0]: D0_, D[1]: D1_}
 
-    s_, d_ = mle.eval([s, d1], feed_dict)
-    plt.plot(s_, d_)
+    s_, d_ = mle.run([s, d1], feed_dict)
+    plt.plot(s_, 100 * d_)
+    plt.xlabel('s')
+    plt.ylabel('price-dividend ratio (%)')
+    plt.ylim([1, 4.5])
     plt.show()
     plt.pause(1e-6)
 
 
 # %% --- Iteration ----------------------------------------------------
-program = {sample: 1, regress: 1, test: 500}
-mle.iterate(program, T='01:00:30')  # Iterate for 30 s
+program = {regress: 1, test: 500}
+mle.iterate(program, T='00:00:30')  # Iterate for 30 s
 mle.save()
