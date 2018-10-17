@@ -16,6 +16,6 @@ setup(name='mlecon',
           'tensorflow>=1.10',
           'progressbar2',
       ],
-      python_requires='>=3.6.3',
+      python_requires='>=3.5.3',
       packages=['mlecon'],
       zip_safe=False)
