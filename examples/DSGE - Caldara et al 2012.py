@@ -1,4 +1,4 @@
-import mlecon as mle
+import sherman as mle
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
@@ -11,6 +11,8 @@ hidden = [32, 16, 8]
 dt = mle.dt
 Δt = 0.5
 mle.delta_t = Δt
+batch_size = 256
+mle.set_batch_size(batch_size)
 
 K, z, σ = mle.states(3)  # State variables
 dZ = mle.brownian_shocks(2)  # Brownian Shocks
@@ -19,17 +21,16 @@ dZ = mle.brownian_shocks(2)  # Brownian Shocks
 β, ν, ζ, δ, λ, σ_, γ, η, ρ, ψ = 0.04, 0.36, .3, 0.0196, 0.95, -3, 4, .1, .9, .5
 θ = (1 - γ) / (1 - 1 / ψ)
 
-# Bounds
-bounds = {K: [.1, 10], z: [-.5, .5], σ: [-6, -1]}
-sample = mle.sampler(bounds)
+# State variables
+K = mle.state(.1, 10)
+z = mle.state(-0.5, .5)
+σ = mle.state(-6, -1)
 
 # Function approximators
-inputs = [K, z, σ]
-
-J = mle.network(inputs, hidden, name='Value_function')
-L = mle.network(inputs, hidden, name='labor', bnds=[1e-6, .999],
+J = mle.network([K, z, σ], hidden, name='Value_function')
+L = mle.network([K, z, σ], hidden, name='labor', bnds=[1e-6, .999],
                 activation_fn=tf.nn.relu)
-s = mle.network(inputs, hidden, name='savings', bnds=[1e-6, .999])
+s = mle.network([K, z, σ], hidden, name='savings', bnds=[1e-6, .999])
 
 # %% -----------  Economic Model -----------------------------
 Y = mle.exp(z) * K**ζ * L**(1 - ζ)
@@ -49,10 +50,6 @@ T = J + Δt * HJB   # Bellman target
 policy_eval = mle.fit(J, T)
 policy_improv = mle.greedy(HJB, actions=[s, L])
 
-# %% ---- Stabilizing policy ---------------------------------
-initial = tf.group(mle.fit(L, .3),
-                   mle.fit(s, 1 - ρ))
-
 # %% ---- # Launch graph ---------------------------------
 mle.launch()
 
@@ -68,7 +65,7 @@ mle.set_summary(scalars)
 
 
 # %% -----------  Test function -----------------------------
-feed_dict = {K: np.linspace(1, 10, mle.get_batch_size()),
+feed_dict = {K: np.linspace(1, 10, batch_size),
              z: 0,
              σ: -3}
 
@@ -90,14 +87,9 @@ def test():
     plt.pause(1e-6)
 
 
-# %% ----------- Initialization ---------------------------------
-program = {sample: 1, initial: 1, policy_eval: 1, test: 500}
-mle.iterate(program, T='00:00:10')
-
 # %% -----------  Iteration --------------------------------------
 # mle.load()  # Load previous results?
-program = {sample: 1,
-           policy_eval: 1,
+program = {policy_eval: 1,
            policy_improv: 1,
            test: 1000,
            mle.add_summary: 100}
