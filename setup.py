@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='mlecon',
-      version='0.1.8',
+      version='0.1.9',
       description='Machine Learning for Economic Modeling',
       url='',
       author='Victor Duarte',
