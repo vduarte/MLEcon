@@ -15,6 +15,7 @@ setup(name='mlecon',
       install_requires=[
           'tensorflow>=1.6',
           'progressbar2',
+           'keras'
       ],
       python_requires='>=3.6.3',
       packages=['mlecon'],
