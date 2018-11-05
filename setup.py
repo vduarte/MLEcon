@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='mlecon',
-      version='0.1.10',
+      version='0.1.11',
       description='Machine Learning for Economic Modeling',
       url='',
       author='Victor Duarte',
@@ -15,7 +15,8 @@ setup(name='mlecon',
       install_requires=[
           'tensorflow>=1.6',
           'progressbar2',
-           'keras'
+           'keras',
+           'tfmpl'
       ],
       python_requires='>=3.6.3',
       packages=['mlecon'],
