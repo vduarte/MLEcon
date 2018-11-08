@@ -14,17 +14,17 @@ mle.delta_t = Δt
 batch_size = 256
 mle.set_batch_size(batch_size)
 
-K, z, σ = mle.states(3)  # State variables
-dZ = mle.brownian_shocks(2)  # Brownian Shocks
-
-# Model parameters
-β, ν, ζ, δ, λ, σ_, γ, η, ρ, ψ = 0.04, 0.36, .3, 0.0196, 0.95, -3, 4, .1, .9, .5
-θ = (1 - γ) / (1 - 1 / ψ)
-
 # State variables
 K = mle.state(.1, 10)
 z = mle.state(-0.5, .5)
 σ = mle.state(-6, -1)
+
+# Brownian Shocks
+dZ = mle.brownian_shocks(2)
+
+# Model parameters
+β, ν, ζ, δ, λ, σ_, γ, η, ρ, ψ = 0.04, 0.36, .3, 0.0196, 0.95, -3, 4, .1, .9, .5
+θ = (1 - γ) / (1 - 1 / ψ)
 
 # Function approximators
 J = mle.network([K, z, σ], hidden, name='Value_function')
