@@ -13,10 +13,9 @@ setup(name='mlecon',
                      'mlecon_compiled.cpython-36m-x86_64-linux-gnu.so',
                      'mlecon_compiled.cp36-win_amd64.pyd']},
       install_requires=[
-          'tensorflow>=1.12',
-          'progressbar2',
-           'keras',
-           'tfmpl'
+          'tensorflow>=2.1',
+          'tf_agents',
+           'python-varname',
       ],
       python_requires='>=3.6.3',
       packages=['mlecon'],
